@@ -25,12 +25,13 @@
                                            (strict-if (list-ref s (const 1)) (fail) s)))]
         [else  null]))
 
-#;
+#|
 (let*-values ([(ss ws)  (drbayes-sample (drbayes (S)) 2000)]
               [(ss ws)  (count-samples ss ws)])
   (define d (discrete-dist ss ws))
   (values (discrete-dist-values d)
           (discrete-dist-probs d)))
+|#
 
 (let ()
   (define-values (ss ws)
@@ -45,7 +46,9 @@
                                                           (list-ref s 3)
                                                           (not (list-ref s 4))
                                                           (list-ref s 5)
-                                                          (not (list-ref s 6)))
+                                                          (not (list-ref s 6))
+                                                          (list-ref s 7)
+                                                          (not (list-ref s 8)))
                                                      s
                                                      (fail))))
                                        2000)])
@@ -54,7 +57,7 @@
               (map (inst cdr Value Flonum) sws))))
   
   (printf "DrBayes samples: ~a~n" (length ss))
-  (let-values ([(ss ws)  (count-samples ss ws)])
+  #;(let-values ([(ss ws)  (count-samples ss ws)])
     (discrete-dist ss ws))
   )
 
@@ -98,13 +101,13 @@
        (cond [(i . < . 2000)
               (define s (racket-S))
               (match s
-                [(list _ #t #f #t #f #t #f _ ...)  (cons (assert s pair?) (loop (+ i 1)))]
+                [(list _ #t #f #t #f #t #f #t #f _ ...)  (cons (assert s pair?) (loop (+ i 1)))]
                 ;[_  (cons (cast s (Listof Boolean)) (loop (+ i 1)))]
                 [_  (loop i)])]
              [else
               empty]))))
   
   (printf "Rejection samples: ~a~n" (length ss))
-  (let-values ([(ss ws)  (count-samples ss)])
+  #;(let-values ([(ss ws)  (count-samples ss)])
     (discrete-dist ss ws))
   )
